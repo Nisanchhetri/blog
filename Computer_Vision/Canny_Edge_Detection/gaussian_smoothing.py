@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from Computer_Vision.Gaussian_Smoothing.convolution import convolution
+from convolution import convolution
 
 
 def dnorm(x, mu, sd):

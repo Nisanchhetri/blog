@@ -2,8 +2,8 @@ import numpy as np
 import cv2
 import argparse
 
-from Computer_Vision.Canny_Edge_Detection.sobel import sobel_edge_detection
-from Computer_Vision.Canny_Edge_Detection.gaussian_smoothing import gaussian_blur
+from sobel import sobel_edge_detection
+from gaussian_smoothing import gaussian_blur
 
 import matplotlib.pyplot as plt
 
@@ -127,6 +127,12 @@ def hysteresis(image, weak):
 
     return final_image
 
+def plot_images(image):
+    plt.xticks([])
+    plt.yticks([])
+    plt.imshow(image, plt.get_cmap('gray'))
+    plt.show()
+
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
@@ -134,13 +140,13 @@ if __name__ == '__main__':
     ap.add_argument("-v", "--verbose", type=bool, default=False, help="Path to the image")
     args = vars(ap.parse_args())
 
-    image = cv2.imread(args["image"])
+    image = cv2.imread(args["image"], 0)
 
-    blurred_image = gaussian_blur(image, kernel_size=9, verbose=False)
+    blurred_image = gaussian_blur(image, kernel_size=25, verbose=False)
 
     edge_filter = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
 
-    gradient_magnitude, gradient_direction = sobel_edge_detection(blurred_image, edge_filter, convert_to_degree=True, verbose=args["verbose"])
+    new_image_x, new_image_y, gradient_magnitude, gradient_direction = sobel_edge_detection(blurred_image, edge_filter, convert_to_degree=True, verbose=args["verbose"])
 
     new_image = non_max_suppression(gradient_magnitude, gradient_direction, verbose=args["verbose"])
 
@@ -150,6 +156,4 @@ if __name__ == '__main__':
 
     new_image = hysteresis(new_image, weak)
 
-    plt.imshow(new_image, cmap='gray')
-    plt.title("Canny Edge Detector")
-    plt.show()
+    plot_images(new_image)

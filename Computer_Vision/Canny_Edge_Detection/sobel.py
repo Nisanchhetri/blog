@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from Computer_Vision.Canny_Edge_Detection.convolution import convolution
+from convolution import convolution
 
 
 def sobel_edge_detection(image, filter, convert_to_degree=False, verbose=False):
@@ -33,4 +33,4 @@ def sobel_edge_detection(image, filter, convert_to_degree=False, verbose=False):
         gradient_direction = np.rad2deg(gradient_direction)
         gradient_direction += 180
 
-    return gradient_magnitude, gradient_direction
+    return new_image_x, new_image_y, gradient_magnitude, gradient_direction
